@@ -3,7 +3,7 @@ import tensorflow as tf
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from tensorflow.keras.layers import Input, Conv2D, Conv2DTranspose, BatchNormalization, Activation, MaxPool2D, Concatenate
 from tensorflow.keras.models import Model
-from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.applications import EfficientNetB0,MobileNetV2
 import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 
@@ -28,21 +28,21 @@ def expansive_block(input, skip_features, num_filters):
     x = conv_block(x, num_filters)
     return x
 
-def build_unet_mb2(shape=(256,256,3)):
+def build_unet_eff0(shape=(256,256,3)):
     """ INPUT """
     inputs = Input(shape=shape, name='input')
 
     """ BACKBONE MobileNetV2 """
-    encoder = MobileNetV2(include_top=False, weights='imagenet', input_tensor=inputs)
+    encoder = EfficientNetB0(include_top=False, weights='imagenet', input_tensor=inputs)
 
     """ Encoder """
     s1 = encoder.get_layer('input').output # [(None, 256, 256, 3)
-    s2 = encoder.get_layer('block_1_expand_relu').output # (None, 128, 128, 96)
-    s3 = encoder.get_layer('block_3_expand_relu').output # (None, 64, 64, 144)        
-    s4 = encoder.get_layer('block_6_expand_relu').output # (None, 32, 32, 192)
+    s2 = encoder.get_layer('block2a_expand_activation').output # None, 128, 128, 144 
+    s3 = encoder.get_layer('block3a_expand_activation').output # None, 64, 64, 192      
+    s4 = encoder.get_layer('block4a_expand_activation').output # None, 32, 32, 288
 
     """ Bridge """
-    b1 = encoder.get_layer('block_13_expand_relu').output #(None, 16, 16, 576)
+    b1 = encoder.get_layer('block6a_expand_activation').output        
 
     """ Decoder """
     d1 = expansive_block(b1, s4, 512)
@@ -51,12 +51,12 @@ def build_unet_mb2(shape=(256,256,3)):
     d4 = expansive_block(d3, s1, 64)
 
     """ Output """
-    outputs = Conv2D(3, (1,1), 1, 'same', activation='softmax')(d4)
+    outputs = Conv2D(3, (1,1), 1, 'same', activation=  'softmax')(d4)
 
-    return Model(inputs, outputs, name='MobilenetV2_Unet')
+    return Model(inputs, outputs, name='EfficientB0-Unet')
 
-def compile_unet_mb2(mobilenetv2_unet):
-    mobilenetv2_unet.compile(loss='categorical_crossentropy',
+def compile_unet_eff0(unet_eff0):
+    unet_eff0.compile(loss='categorical_crossentropy',
              optimizer=tf.keras.optimizers.Adam(1e-4),
              metrics=[
                  tf.keras.metrics.Precision(),
@@ -66,8 +66,21 @@ def compile_unet_mb2(mobilenetv2_unet):
              ])
 
     callbacks = [
-        ModelCheckpoint('mobinetv2_unet.h5', verbose=1, save_best_model=True),
+        ModelCheckpoint('unet_eff3.h5', verbose=1, save_best_model=True),
         ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1, min_lr=1e-6),
         EarlyStopping(monitor='val_loss', patience=5, verbose=1)
     ]   
-    return mobilenetv2_unet,callbacks
+    return unet_eff0,callbacks
+
+# shape=(256,256,3)
+# inputs = Input(shape=shape, name='input')
+# # encoder = EfficientNetB3(include_top=False, weights='imagenet', input_tensor=inputs)
+# encoder = MobileNetV2(include_top=False, weights='imagenet', input_tensor=inputs)
+# print(encoder.summary())
+
+# """ Encoder """
+# s1 = encoder.get_layer('input').output # [(None, 256, 256, 3)
+# s2 = encoder.get_layer('block2a_expand_activation').output # None, 128, 128, 144 
+# s3 = encoder.get_layer('block3a_expand_activation').output # None, 64, 64, 192      
+# s4 = encoder.get_layer('block4a_expand_activation').output # None, 32, 32, 288
+# b1 = encoder.get_layer('block6a_expand_activation').output         
