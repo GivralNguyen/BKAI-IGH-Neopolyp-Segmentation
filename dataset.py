@@ -16,6 +16,12 @@ def read_image(image_path):
     image = image/255.0
     image = image.astype(np.float32)
     return image
+def read_image_ori(image_path):
+    image = cv.imread(image_path, cv.IMREAD_COLOR)
+    # image = cv.resize(image, (WIDTH, HEIGHT))
+    image = image/255.0
+    image = image.astype(np.float32)
+    return image
 
 def read_mask(mask_path):
     image = cv.imread(mask_path)
@@ -58,7 +64,7 @@ def show_example(image, mask):
     plt.imshow(image[...,1], cmap='bone')
     plt.imshow(mask, alpha=0.5, cmap='nipy_spectral')
     plt.axis('off')
-    plt.title('Orbit')
+    plt.title('Overlay')
 
     plt.show()
     
