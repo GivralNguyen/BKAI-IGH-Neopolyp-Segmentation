@@ -62,8 +62,7 @@ def mask2string(dir):
     return r
 
 
-MASK_DIR_PATH = MASK_RES_PATH # change this to the path to your output mask folder
-dir = MASK_DIR_PATH
+dir = MASK_RES_PATH # change this to the path to your output mask folder
 res = mask2string(dir)
 df = pd.DataFrame(columns=['Id', 'Expected'])
 df['Id'] = res['ids']

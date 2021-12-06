@@ -2,3 +2,5 @@ test.tar.gz
 train_gt.tar.gz
 train.tar.gz
 __pycache__
+res/*
+debug.py

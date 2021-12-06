@@ -6,7 +6,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.applications import MobileNetV2
 import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
-
+from config import WIDTH,HEIGHT
 def conv_block(input, num_filters):
     x = Conv2D(filters=num_filters, kernel_size=3, padding='same')(input)
     x = BatchNormalization()(x)
@@ -28,7 +28,7 @@ def expansive_block(input, skip_features, num_filters):
     x = conv_block(x, num_filters)
     return x
 
-def build_unet_mb2(shape=(256,256,3)):
+def build_unet_mb2(shape=(HEIGHT,WIDTH,3)):
     """ INPUT """
     inputs = Input(shape=shape, name='input')
 

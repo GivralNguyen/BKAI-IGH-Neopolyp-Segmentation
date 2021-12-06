@@ -51,18 +51,18 @@ def show_example(image, mask):
     image = image*255 # Get back image pixels
     plt.figure(figsize=(18,15))
     plt.subplot(1,3,1)
-    plt.imshow(image[...,1], cmap='bone')
+    plt.imshow(image[...,1].astype(np.uint8), cmap='bone')
     plt.axis('off')
     plt.title('Image')
 
     plt.subplot(1,3,2)
-    plt.imshow(mask, cmap='nipy_spectral')
+    plt.imshow(mask.astype(np.uint8), cmap='nipy_spectral')
     plt.axis('off')
     plt.title('Mask')
 
     plt.subplot(1,3,3)
-    plt.imshow(image[...,1], cmap='bone')
-    plt.imshow(mask, alpha=0.5, cmap='nipy_spectral')
+    plt.imshow(image[...,1].astype(np.uint8), cmap='bone')
+    plt.imshow(mask.astype(np.uint8), alpha=0.5, cmap='nipy_spectral')
     plt.axis('off')
     plt.title('Overlay')
 
