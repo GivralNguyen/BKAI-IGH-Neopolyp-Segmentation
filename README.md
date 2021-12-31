@@ -129,3 +129,8 @@ rgb  =  np.zeros((*p.shape,  3))
 for  label,  color  in  enumerate(colors):
 	rgb[p  ==  label] =  color
 ```
+
+# VII. RESULT
+![result](https://i.ibb.co/28rkdrt/score.png)
+The baseline mobilenetv2-Unet model achieves accuracy of ```0.582``` on the public leaderboard. This could be a good baseline for other participants to build on and achieve higher score.  
+

@@ -66,7 +66,7 @@ def compile_unet_eff0(unet_eff0):
              ])
 
     callbacks = [
-        ModelCheckpoint('unet_eff3.h5', verbose=1, save_best_model=True),
+        ModelCheckpoint('unet_eff0.h5', verbose=1, save_best_model=True),
         ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1, min_lr=1e-6),
         EarlyStopping(monitor='val_loss', patience=5, verbose=1)
     ]   

@@ -33,7 +33,7 @@ def onehot_to_rgb(onehot, color_dict):
     return np.uint8(output)
 colors = np.array([[ 0,   0, 0],
                        [ 0, 255,   0],
-                       [   255, 0,   0]])
+                       [   0, 0,   255]])
 for image in tqdm(test_images):
     '''
     We need segent 3 classes:
@@ -41,14 +41,14 @@ for image in tqdm(test_images):
         + 1 if the pixel is part of a non-neoplastic polyp (denoted by green color);
         + 2 if the pixel is part of a neoplastic polyp (denoted by red color).
     '''
-    save_name = image.split('/')[-1]
+    save_name = image.split('/')[-1].replace('.jpeg','.png')
     # print(save_name)
     original_image = cv2.imread(image)
     h, w, c = original_image.shape
     x = read_image(image)
-    p = model.predict(np.expand_dims(x, axis=0))[0]
-    show_img = SHOW_IMAGE 
-    if show_img:
+    p = model.predict(np.expand_dims(x, axis=0))[0]  #256,256,3
+    show_img = False 
+    if show_img: #False 
         p = np.argmax(p, axis=-1) # 995,1280
         rgb = np.zeros((*p.shape, 3))
         for label, color in enumerate(colors):
@@ -59,15 +59,10 @@ for image in tqdm(test_images):
         p = np.argmax(p, axis=-1) # 995,1280
         # print(np.unique(p))
         # p_rgb = onehot_to_rgb(p,color_dict)
-        rgb = np.zeros((*p.shape, 3))
+        rgb = np.zeros((*p.shape, 3)).astype(np.uint8)
         for label, color in enumerate(colors):
             rgb[p == label] = color
-        # data = im.fromarray(p)
-        # data.save(save_folder+'/'+save_name)
-        # 
-        # x = read_image_ori(p)
-        # x = x*255 # Get back image pixels
-        imageio.imwrite(save_folder+'/'+save_name, rgb)
+        cv2.imwrite(save_folder+'/'+save_name, rgb)
         
 
     # data = im.fromarray(p)
