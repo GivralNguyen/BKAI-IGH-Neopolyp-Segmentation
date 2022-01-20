@@ -22,6 +22,8 @@ project
 └───logs
 │
 └───models 
+│
+└───loss 
 |
 └───res 
 |
@@ -39,6 +41,8 @@ project
 `models` : Code implementation of the models. Current supported models are:  `Unet` and `Attention Unet` , and with three diferent backbones: `Mobilnetv2`,`Efficientnet B0` and  `VGG-16`.
 
 `res` : inference results are saved here.
+
+`loss` : im
 
 `weights` : weights are saved here.
 
@@ -130,7 +134,5 @@ for  label,  color  in  enumerate(colors):
 	rgb[p  ==  label] =  color
 ```
 
-# VII. RESULT
-![result](https://i.ibb.co/28rkdrt/score.png)
-The baseline mobilenetv2-Unet model achieves accuracy of ```0.582``` on the public leaderboard. This could be a good baseline for other participants to build on and achieve higher score.  
+  
 
