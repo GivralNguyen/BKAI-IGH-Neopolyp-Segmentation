@@ -104,7 +104,7 @@ MASK_RES_PATH  =  '/media/HDD/bkai/res'
 - Information about Unet models are located at `models/Unet.py` , `models/Unetefficientb0.py`, `models/Unetmobilev2.py`.
 ## Attention Unet 
 
-![enter image description here](https://miro.medium.com/max/1838/1*SAxlsyXAh4B76PhVjHlaBg.png) 
+![enter image description here](https://miro.medium.com/max/724/1*PdYEf-OuUWkRsm2Lfrmy6A.png) 
 - Information about Attention Unet models are located at `models/AttentionUnet.py` , `models/AttentionUnetefficientb0.py`, `models/AttentionUnetmobilev2.py`.
 
 ## DATASET 
