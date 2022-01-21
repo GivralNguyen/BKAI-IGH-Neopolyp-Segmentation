@@ -42,7 +42,7 @@ project
 
 `res` : inference results are saved here.
 
-`loss` : im
+`loss` : implementation of loss functions
 
 `weights` : weights are saved here.
 
